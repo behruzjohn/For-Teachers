@@ -5,6 +5,5 @@ export const HEADER_PATH = [
   },
   {
     title: 'Recently',
-    path: '/recently',
   },
 ];
