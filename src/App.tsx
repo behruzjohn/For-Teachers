@@ -19,6 +19,8 @@ function App() {
 
     if (!Array.isArray(data) || data.length === 0) {
       navigate('/signIn');
+    } else {
+      navigate('/');
     }
   }, [navigate]);
 
