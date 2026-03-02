@@ -1,5 +1,5 @@
 import type { TypeOfObject } from './types/types';
-import { BorderStyle } from 'exceljs';
+import type { BorderStyle } from 'exceljs';
 
 export const Data: TypeOfObject[] = [
   {

@@ -4,9 +4,7 @@ import {
   AccordionSummary,
   Autocomplete,
   Button,
-  Chip,
   FormControl,
-  FormLabel,
   IconButton,
   Stack,
   TextField,
@@ -87,7 +85,7 @@ function Form({ onSubmit }: FormProps) {
                   {...field}
                   disablePortal
                   options={Choraks}
-                  value={field.value || null}
+                  value={field.value ? String(field.value) : ''}
                   onChange={(_, newValue) => {
                     field.onChange(newValue);
                   }}
@@ -161,31 +159,7 @@ function Form({ onSubmit }: FormProps) {
 
           <AccordionDetails>
             {fields.map((item, index) => (
-              <Stack
-                key={item.id}
-                flexDirection='row'
-                gap={1}
-                // alignItems='center'
-                mb={2}
-              >
-                {/* <Controller
-                  name={`exercises.${index}.title`}
-                  control={control}
-                  render={({ field }) => (
-                    <Chip
-                      color='default'
-                      style={{
-                        borderRadius: 12,
-                        width: '50%',
-                        height: 50,
-                        fontSize: 15,
-                      }}
-                      {...field}
-                      label={`Topshiriq ${index + 1}`}
-                    />
-                  )}
-                />
-                <Typography variant='h6'>-</Typography> */}
+              <Stack key={item.id} flexDirection='row' gap={1} mb={2}>
                 <Stack style={{ width: '100%' }}>
                   <Typography fontSize={13} variant='caption'>
                     Topshiriq {index + 1}
