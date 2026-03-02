@@ -1,12 +1,9 @@
 import { useEffect } from 'react';
 import Home from './pages/Home/Home';
 import Header from './components/Header/Header';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import SignIn from './pages/SignIn/SignIn';
-type TypeOfTeacherInfo = {
-  name: string;
-  lesson: string;
-}[];
+
 function App() {
   const navigate = useNavigate();
   const localInfo = localStorage.getItem('teacherInfo');
