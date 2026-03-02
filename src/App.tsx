@@ -9,7 +9,7 @@ function App() {
   let data: string;
   const localData = localStorage.getItem('teacherInfo');
   if (localData?.length) {
-    data = JSON.parse(localData).name;
+    data = JSON.parse(localData);
   }
 
   useEffect(() => {
@@ -19,6 +19,7 @@ function App() {
       navigate('/');
     }
   }, []);
+
   return (
     <>
       <Header />
