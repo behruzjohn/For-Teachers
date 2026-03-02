@@ -6,8 +6,11 @@ import SignIn from './pages/SignIn/SignIn';
 
 function App() {
   const navigate = useNavigate();
-  const localInfo = localStorage.getItem('teacherInfo');
-  const data = JSON.parse(localInfo || '');
+  let data: string;
+  const localData = localStorage.getItem('teacherInfo');
+  if (localData?.length) {
+    data = JSON.parse(localData).name;
+  }
 
   useEffect(() => {
     if ((data?.length && data?.length === null) || data === null) {
