@@ -13,6 +13,8 @@ function App() {
     if (!localData) {
       navigate('/signIn');
       return;
+    } else {
+      navigate('/');
     }
 
     const data = JSON.parse(localData);
