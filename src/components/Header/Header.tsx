@@ -10,10 +10,11 @@ import {
 import schoolIcon from '../../assets/graduation-cap.png';
 import { HEADER_PATH } from './constants';
 import { StyleHeader } from './Header.style';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Header() {
   const params = useLocation();
+  const navigate = useNavigate();
   const isLogin = localStorage.getItem('teacherInfo');
 
   let data;
@@ -68,13 +69,15 @@ function Header() {
             />
           </Stack>
         ) : (
-          <Stack className='profile'>
-            <Chip
-              color='warning'
-              style={{ fontFamily: 'system-ui' }}
-              label="Ro'yxatdan o'ting!"
-            />
-          </Stack>
+          <div onClick={() => navigate('/signIn')}>
+            <Stack className='profile'>
+              <Chip
+                color='warning'
+                style={{ fontFamily: 'system-ui' }}
+                label="Ro'yxatdan o'ting!"
+              />
+            </Stack>
+          </div>
         )}
       </Stack>
       <Divider />

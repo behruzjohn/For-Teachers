@@ -1,7 +1,7 @@
 export const HEADER_PATH = [
   {
     title: 'Home',
-    path: '/',
+    path: '/home',
   },
   {
     title: 'Recently',
