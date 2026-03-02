@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import Home from './pages/Home/Home';
 import Header from './components/Header/Header';
 import { Route, Routes, useNavigate } from 'react-router-dom';
@@ -7,24 +6,12 @@ import SignIn from './pages/SignIn/SignIn';
 function App() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const localData = localStorage.getItem('teacherInfo');
-
-    if (!localData) {
-      navigate('/signIn');
-      return;
-    } else {
-      navigate('/');
-    }
-
-    const data = JSON.parse(localData);
-
-    if (!Array.isArray(data) || data.length === 0) {
-      navigate('/signIn');
-    } else {
-      navigate('/');
-    }
-  }, [navigate]);
+  const isLogin = localStorage.getItem('teacherInfo');
+  if (isLogin?.length) {
+    navigate('/');
+  } else {
+    navigate('/signIn');
+  }
 
   return (
     <>
