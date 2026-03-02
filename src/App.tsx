@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn/SignIn';
 
 function App() {
   const navigate = useNavigate();
+
   useEffect(() => {
     const localData = localStorage.getItem('teacherInfo');
 
@@ -14,17 +15,13 @@ function App() {
       return;
     }
 
-    try {
-      const data = JSON.parse(localData);
+    const data = JSON.parse(localData);
 
-      if (!data) {
-        navigate('/signIn');
-      }
-    } catch (error) {
+    if (!Array.isArray(data) || data.length === 0) {
       navigate('/signIn');
     }
   }, [navigate]);
-  
+
   return (
     <>
       <Header />
