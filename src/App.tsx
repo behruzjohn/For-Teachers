@@ -7,7 +7,7 @@ function App() {
   const navigate = useNavigate();
 
   const isLogin = localStorage.getItem('teacherInfo');
-  if (isLogin?.length) {
+  if (isLogin?.length && isLogin?.length >= 0) {
     navigate('/');
   } else {
     navigate('/signIn');
