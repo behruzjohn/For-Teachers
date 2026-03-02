@@ -6,20 +6,25 @@ import SignIn from './pages/SignIn/SignIn';
 
 function App() {
   const navigate = useNavigate();
-  let data: string;
-  const localData = localStorage.getItem('teacherInfo');
-  if (localData?.length) {
-    data = JSON.parse(localData);
-  }
-
   useEffect(() => {
-    if ((data?.length && data?.length === null) || data === null) {
-      navigate('/signIn');
-    } else {
-      navigate('/');
-    }
-  }, []);
+    const localData = localStorage.getItem('teacherInfo');
 
+    if (!localData) {
+      navigate('/signIn');
+      return;
+    }
+
+    try {
+      const data = JSON.parse(localData);
+
+      if (!data) {
+        navigate('/signIn');
+      }
+    } catch (error) {
+      navigate('/signIn');
+    }
+  }, [navigate]);
+  
   return (
     <>
       <Header />
