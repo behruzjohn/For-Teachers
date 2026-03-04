@@ -19,4 +19,7 @@ export const StyleSignIn = styled.div`
     max-width: 500px;
     width: 100%;
   }
+  .signInBtn {
+    height: 44px;
+  }
 `;

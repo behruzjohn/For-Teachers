@@ -25,16 +25,16 @@ export const StyleHeader = styled.div`
   .profile {
     cursor: pointer;
     padding: 6px;
-    margin-top: 20px;
+
     border-radius: 3px;
   }
   .chip {
     border-radius: 6px;
   }
 
-  @media (min-width: 468px) {
+  @media screen and (max-width: 480px) {
     .containerOfProfile {
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
     .profile {
       padding: 6px;

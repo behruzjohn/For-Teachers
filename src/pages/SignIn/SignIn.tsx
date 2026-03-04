@@ -58,9 +58,8 @@ function SignIn() {
                 )}
               />
             </Stack>
-            <Button
+            <Button className='signInBtn'
               onClick={handleSubmitLogin}
-              startIcon={<img width={20} height={18} src={loginIcon} />}
               color='success'
               variant='contained'
             >
