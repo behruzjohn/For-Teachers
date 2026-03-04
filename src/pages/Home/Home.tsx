@@ -2,7 +2,8 @@ import { saveAs } from 'file-saver';
 import ExcelJS from 'exceljs';
 import {
   borderStyle,
-  borderStyleForHeaderTitle,
+  borderStyleForHeaderTitle1,
+  borderStyleForHeaderTitle2,
   Title,
 } from '../../constants/data';
 import { Container, Divider, Stack, Typography } from '@mui/material';
@@ -16,25 +17,40 @@ import Loader from '../../components/Loader/Loader';
 function Home() {
   const [load, setLoad] = useState(false);
   const localData = localStorage.getItem('teacherInfo');
-  let teacherName: string;
-  if (localData?.length) {
+  let teacherName: string = '';
+  let lesson = '';
+  if (localData) {
     teacherName = JSON.parse(localData).name;
+    lesson = JSON.parse(localData).lesson;
   }
 
   const handleClickDownload = async (data: FormValues) => {
+    const headerColumnValues = [
+      '№',
+      'FIO',
+      ...data.exercises.map((e) => `${e.title}\n(${e.score}-bal)`),
+      'Jami',
+      '%',
+    ];
+
     const workBook = new ExcelJS.Workbook();
     const workSheet = workBook.addWorksheet(`${data?.class}-sinf`);
 
     //header-title
-    workSheet.mergeCells('A1:G1');
-    workSheet.mergeCells('A2:G2');
+    const lastColumnLetter = workSheet.getColumn(
+      headerColumnValues.length,
+    ).letter;
+
+    workSheet.mergeCells(`A1:${lastColumnLetter}1`);
+    workSheet.mergeCells(`A2:${lastColumnLetter}2`);
+
     const titleCell = workSheet.getCell('A1');
     const titleCellDown = workSheet.getCell('A2');
 
     titleCell.value = Title;
     titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
     titleCell.font = { bold: false, size: 12, color: { argb: '#000000' } };
-    titleCellDown.border = borderStyle;
+    titleCell.border = borderStyleForHeaderTitle1;
     titleCell.fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -42,10 +58,10 @@ function Home() {
     };
 
     //title cell down
-    titleCellDown.value = `${data?.class} -  fanidan  ${data?.chorak}   ${data?.examName} natijalari tahlili O'qituvchi: ${teacherName}`;
+    titleCellDown.value = `${data?.class} sinf ${lesson} -  fanidan  ${data?.chorak}   ${data?.examName} natijalari tahlili O'qituvchi: ${teacherName}`;
     titleCellDown.alignment = { horizontal: 'center', vertical: 'middle' };
     titleCellDown.font = { bold: false, size: 12, color: { argb: '#000000' } };
-    titleCellDown.border = borderStyleForHeaderTitle;
+    titleCellDown.border = borderStyleForHeaderTitle2;
     titleCellDown.fill = {
       type: 'pattern',
       pattern: 'solid',
@@ -54,14 +70,6 @@ function Home() {
     //
 
     //column
-
-    const headerColumnValues = [
-      '№',
-      'FIO',
-      ...data.exercises.map((e) => `${e.title}\n(${e.score}-bal)`),
-      'Jami',
-      '%',
-    ];
 
     const headerRow = workSheet.addRow(headerColumnValues);
 

@@ -22,7 +22,7 @@ function SignIn() {
     if (lessonVal.length && teacherName.length) {
       const data = { name: teacherName, lesson: lessonVal };
       localStorage.setItem('teacherInfo', JSON.stringify(data));
-      navigate('/');
+      navigate('/home');
     }
   };
 

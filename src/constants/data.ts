@@ -67,7 +67,13 @@ export const borderStyle = {
   right: { style: 'thin' as BorderStyle, color: { argb: '000000' } },
 };
 
-export const borderStyleForHeaderTitle = {
+export const borderStyleForHeaderTitle1 = {
+  top: { style: 'thin' as BorderStyle, color: { argb: '000000' } },
+  left: { style: 'thin' as BorderStyle, color: { argb: '000000' } },
+  right: { style: 'thin' as BorderStyle, color: { argb: '000000' } },
+};
+
+export const borderStyleForHeaderTitle2 = {
   left: { style: 'thin' as BorderStyle, color: { argb: '000000' } },
   bottom: { style: 'thin' as BorderStyle, color: { argb: '000000' } },
   right: { style: 'thin' as BorderStyle, color: { argb: '000000' } },

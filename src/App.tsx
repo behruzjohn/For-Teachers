@@ -1,27 +1,26 @@
 import Home from './pages/Home/Home';
 import Header from './components/Header/Header';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import SignIn from './pages/SignIn/SignIn';
+import { useEffect } from 'react';
 
 function App() {
+  const navigate = useNavigate();
   const isLogin = localStorage.getItem('teacherInfo');
 
-  if (isLogin?.length && isLogin?.length >= 0) {
-    return (
-      <>
-        <Header />
-        <Routes>
-          <Route path='/' element={<Home />} />
-        </Routes>
-      </>
-    );
-  }
+  useEffect(() => {
+    if (isLogin) {
+      navigate('/home');
+    } else {
+      navigate('/signIn');
+    }
+  }, [isLogin, navigate]);
 
   return (
     <>
       <Header />
       <Routes>
-        <Route path='/' element={<SignIn />} />
+        <Route path='/home' element={<Home />} />
         <Route path='/signIn' element={<SignIn />} />
       </Routes>
     </>

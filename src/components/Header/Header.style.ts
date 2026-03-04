@@ -15,10 +15,30 @@ export const StyleHeader = styled.div`
     min-height: 60px;
   }
   .header-title {
+    font-family: 'Montserrat', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
     margin-left: 3px;
     font-size: 18px;
   }
   .profile {
     cursor: pointer;
+    padding: 6px;
+    margin-top: 20px;
+    border-radius: 3px;
+  }
+  .chip {
+    border-radius: 6px;
+  }
+
+  @media (min-width: 468px) {
+    .containerOfProfile {
+      margin-bottom: 20px;
+    }
+    .profile {
+      padding: 6px;
+      border-radius: 3px;
+    }
   }
 `;
