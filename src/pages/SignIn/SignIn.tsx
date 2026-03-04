@@ -10,7 +10,6 @@ import {
 import { StyleSignIn } from './SignIn.style';
 import { LESSONS } from './constants';
 import { useState } from 'react';
-import loginIcon from '../../assets/enter.png';
 import { useNavigate } from 'react-router-dom';
 
 function SignIn() {
