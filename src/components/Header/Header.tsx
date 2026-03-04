@@ -87,8 +87,8 @@ function Header() {
             className='containerOfProfile'
             onClick={() => navigate('/signIn')}
           >
-            <Stack  className='profile'>
-              <Chip 
+            <Stack className='profile'>
+              <Chip
                 className='chip'
                 color='info'
                 style={{ fontFamily: 'system-ui' }}
