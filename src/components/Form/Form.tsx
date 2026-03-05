@@ -16,23 +16,33 @@ import { StyleForm } from './Form.style';
 import assignment from '../../assets/add-file.png';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import add from '../../assets/add.svg';
-import { Choraks, FORM_OPTIONS } from './constants';
+import { Choraks, FORM_OPTIONS, Genders } from './constants';
 import type { FormValues } from './types';
 import deleteIcon from '../../assets/delete.svg';
 import download from '../../assets/download.svg';
+import type { classType } from '../../pages/Home/types';
 
 type FormProps = {
   onSubmit: (data: FormValues) => void;
+  classNameData: classType;
+  setSelectedClass: React.Dispatch<React.SetStateAction<string>>;
+  handleChangeGender: (newGender: string) => void;
 };
 
-function Form({ onSubmit }: FormProps) {
+function Form({
+  setSelectedClass,
+  classNameData,
+  onSubmit,
+
+  handleChangeGender,
+}: FormProps) {
   const {
     control,
     formState: { errors },
     handleSubmit,
   } = useForm<FormValues>({
     defaultValues: {
-      exercises: [{ title: 'Topshiriq 1', score: '', width: 20 }],
+      exercises: [{ title: 'Topshiriq 1', score: '', width: 14 }],
     },
   });
 
@@ -66,10 +76,7 @@ function Form({ onSubmit }: FormProps) {
                     field.onChange(newValue);
                   }}
                   renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      label='Qaysi chsb yoki bsb ekanligini tanlang'
-                    />
+                    <TextField {...params} label='CHSB yoki BSB ni kiriting' />
                   )}
                 />
               </FormControl>
@@ -103,51 +110,63 @@ function Form({ onSubmit }: FormProps) {
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl fullWidth className='examName'>
-                <TextField
-                  type='text'
+              <FormControl fullWidth className='class'>
+                <Autocomplete
                   {...field}
-                  required
-                  error={!!errors[field.name]}
-                  placeholder='Sinfini kiriting.'
+                  disablePortal
+                  options={classNameData}
+                  value={field?.value ? String(field?.value) : ''}
+                  onChange={(_, newValue) => {
+                    field.onChange(newValue);
+                    setSelectedClass(newValue || '');
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label='Sinfni tanlang' />
+                  )}
                 />
               </FormControl>
             )}
           />
 
           <Controller
-            name='countOfStudents'
+            name='gender'
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl fullWidth className='count-of-students'>
-                <TextField
-                  type='number'
+              <FormControl fullWidth className='class'>
+                <Autocomplete
                   {...field}
-                  required
-                  error={!!errors[field.name]}
-                  placeholder="O'quvchilar sonini kiriting"
-                />
-              </FormControl>
-            )}
-          />
-          <Controller
-            name='totalScore'
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => (
-              <FormControl fullWidth className='count-of-students'>
-                <TextField
-                  type='number'
-                  {...field}
-                  required
-                  error={!!errors[field.name]}
-                  placeholder='Jami ballni kiriting...'
+                  disablePortal
+                  options={Genders}
+                  value={field.value ? String(field.value) : ''}
+                  onChange={(_, newValue) => {
+                    field.onChange(newValue);
+                    handleChangeGender(newValue || '');
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} label='Jinsini tanlang' />
+                  )}
                 />
               </FormControl>
             )}
           />
         </Stack>
+        <Controller
+          name='totalScore'
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <FormControl fullWidth className='count-of-students'>
+              <TextField
+                label='Jami ballni kiriting...'
+                type='number'
+                {...field}
+                required
+                error={!!errors[field.name]}
+              />
+            </FormControl>
+          )}
+        />
         <Accordion
           style={{ borderRadius: 4 }}
           slotProps={{ transition: { unmountOnExit: true } }}
@@ -161,15 +180,13 @@ function Form({ onSubmit }: FormProps) {
             {fields.map((item, index) => (
               <Stack key={item.id} flexDirection='row' gap={1} mb={2}>
                 <Stack style={{ width: '100%' }}>
-                  <Typography fontSize={13} variant='caption'>
-                    Topshiriq {index + 1}
-                  </Typography>
                   <Controller
                     name={`exercises.${index}.score`}
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
                       <TextField
+                        label={`Topshiriq ${index + 1}`}
                         style={{ marginTop: 4 }}
                         {...field}
                         type='number'
@@ -180,7 +197,7 @@ function Form({ onSubmit }: FormProps) {
                     )}
                   />
                 </Stack>
-                <Stack mt={3.6}>
+                <Stack mt={1.1}>
                   <IconButton
                     onClick={() => remove(index)}
                     disabled={fields.length === 1}
@@ -201,11 +218,11 @@ function Form({ onSubmit }: FormProps) {
                   append({
                     title: `Topshiriq ${fields.length + 1}`,
                     score: '',
-                    width: 20,
+                    width: 14,
                   })
                 }
               >
-                Yana Qo'shish
+                Yana topshiriq qo'shish
               </Button>
             </Stack>
           </AccordionDetails>

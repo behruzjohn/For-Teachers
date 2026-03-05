@@ -1,13 +1,15 @@
 import type { Worksheet } from 'exceljs';
 import type { FormValues } from '../../../../components/Form/types';
 import { borderStyle } from '../../../../constants/data';
+import type { StudentsDataType } from '../../types';
 type Props = {
   data: FormValues;
   workSheet: Worksheet;
+  students: StudentsDataType[];
   headerColumnValues: number;
 };
 
-function BottomMath({ data, workSheet, headerColumnValues }: Props) {
+function BottomMath({ data, workSheet, headerColumnValues, students }: Props) {
   const count = (title: boolean) => {
     const countArr = [];
     if (title) {
@@ -24,7 +26,8 @@ function BottomMath({ data, workSheet, headerColumnValues }: Props) {
     }
   };
 
-  let currentRow = Number(data?.countOfStudents) + 4;
+  let currentRow = Number(students?.length) + 4;
+
   const endRow = currentRow - 1;
 
   workSheet.insertRow(currentRow, ["O'rtacha ball:", ...count(true)]);

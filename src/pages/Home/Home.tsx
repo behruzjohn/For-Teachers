@@ -11,18 +11,67 @@ import Form from '../../components/Form/Form';
 import { StyleHome } from './Home.style';
 import type { FormValues } from '../../components/Form/types';
 import BottomMath from './components/Math/Math';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Loader from '../../components/Loader/Loader';
+import { createClient } from '@supabase/supabase-js';
+import type { classType, StudentsDataType } from './types';
 
 function Home() {
   const [load, setLoad] = useState(false);
   const localData = localStorage.getItem('teacherInfo');
+  const [classes, setClasses] = useState<classType[]>();
+  const [students, setStudents] = useState<StudentsDataType[]>([]);
+  const [allStudents, setAllStudents] = useState<StudentsDataType[]>([]);
+  const [selectedClass, setSelectedClass] = useState<string>('');
   let teacherName: string = '';
   let lesson = '';
   if (localData) {
     teacherName = JSON.parse(localData).name;
     lesson = JSON.parse(localData).lesson;
   }
+
+  const subbaseUrl = 'https://oaglxlhfzfhblwrzsplh.supabase.co';
+  const subbaseKey = 'sb_publishable_cD0WY9xAVN9xB71aHYwMKw__OoVtT_b';
+  const subbase = createClient(subbaseUrl, subbaseKey);
+
+  useEffect(() => {
+    const getClassData = async () => {
+      const { data } = await subbase.from('available_classes').select('*');
+
+      if (data) {
+        const classNames = data.map((item) => item.class_name);
+        setClasses(classNames);
+      }
+    };
+    getClassData();
+  }, []);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      setLoad(true);
+      const { data } = await subbase.from('students').select('*');
+      if (data) {
+        const filtered = data.filter(
+          (item) => item.className === selectedClass,
+        );
+
+        setAllStudents(filtered.sort());
+        setStudents(filtered.sort());
+      }
+      setLoad(false);
+    };
+    fetchStudents();
+  }, [selectedClass]);
+
+  const handleChangeGender = (newGender: string) => {
+    if (newGender === "O'gil bolalar") {
+      setStudents(allStudents.filter((student) => student.gender === 'male'));
+    } else if (newGender === 'Qiz bolalar') {
+      setStudents(allStudents.filter((student) => student.gender === 'female'));
+    } else {
+      setStudents(allStudents);
+    }
+  };
 
   const handleClickDownload = async (data: FormValues) => {
     const headerColumnValues = [
@@ -92,13 +141,15 @@ function Home() {
     ).letter;
 
     const studentsColumn = workSheet.getColumn(2);
+
     const firstExerciseColumn = workSheet.getColumn(3);
     const lastExerciseColumn = workSheet.getColumn(data?.exercises?.length + 2);
 
-    for (let i = 0; i < data?.countOfStudents; i++) {
+    for (let i = 0; i < students?.length; i++) {
       const row = workSheet.addRow([
         i + 1,
-        ...new Array(data?.exercises.length + 1).fill(''),
+        students[i].fullName,
+        ...new Array(data?.exercises.length).fill(''),
         {
           formula: `SUM(${firstExerciseColumnLetter}${i + 4}:${lastExerciseColumnLetter}${i + 4})`,
         },
@@ -106,8 +157,8 @@ function Home() {
 
       row.eachCell((cell) => {
         cell.border = borderStyle;
-        cell.font = { bold: true, color: { argb: '000000' } };
-        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+        cell.font = { bold: false, color: { argb: '000000' } };
+
         cell.fill = {
           type: 'pattern',
           pattern: 'solid',
@@ -121,12 +172,14 @@ function Home() {
 
     BottomMath({
       data: data,
+      students: students,
       workSheet: workSheet,
       headerColumnValues: headerColumnValues?.length - 1,
     });
 
     const percentColumnIndex = headerColumnValues.length;
     const totalColumnIndex = percentColumnIndex - 1;
+
     const lastRowNumber = workSheet.rowCount - 1;
     workSheet.getColumn(percentColumnIndex).eachCell((cell, index) => {
       const totalCell = workSheet.getCell(index, totalColumnIndex);
@@ -147,6 +200,20 @@ function Home() {
     });
 
     //style
+
+    workSheet.getColumn(totalColumnIndex).eachCell((cell, rowNumber) => {
+      if (rowNumber > 3) {
+        cell.font = { bold: true, color: { argb: '000000' } };
+        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+      }
+    });
+
+    workSheet.getColumn(1).eachCell((cell, rowNumber) => {
+      if (rowNumber > 3) {
+        cell.font = { bold: true, color: { argb: '000000' } };
+        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+      }
+    });
 
     workSheet.getRow(3).eachCell((cell) => {
       cell.font = { bold: true, color: { argb: '000000' } };
@@ -189,12 +256,17 @@ function Home() {
         <StyleHome>
           <Stack className='form-header'>
             <Typography ml={3} variant='h5' fontSize={16} fontWeight={500}>
-              Create Exel File
+              Hisobot yaratish
             </Typography>
             <Divider className='divider' />
           </Stack>
           <Stack alignItems='center'>
-            <Form onSubmit={onsubmit} />
+            <Form
+              setSelectedClass={setSelectedClass}
+              classNameData={classes}
+              handleChangeGender={handleChangeGender}
+              onSubmit={onsubmit}
+            />
           </Stack>
         </StyleHome>
       </Container>
