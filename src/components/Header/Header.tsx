@@ -12,7 +12,10 @@ import schoolIcon from '../../assets/graduation-cap.png';
 import { HEADER_PATH } from './constants';
 import { StyleHeader } from './Header.style';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+type HeaderLinkType = {
+  title: string;
+  path: string;
+};
 function Header() {
   const params = useLocation();
   const navigate = useNavigate();
@@ -59,7 +62,7 @@ function Header() {
           flexDirection='row'
           gap={isMobile ? 3 : 5}
         >
-          {HEADER_PATH?.map((val) => {
+          {HEADER_PATH?.map((val: HeaderLinkType) => {
             return (
               <li className='header_links-li'>
                 <a

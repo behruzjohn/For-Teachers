@@ -24,7 +24,7 @@ import type { classType } from '../../pages/Home/types';
 
 type FormProps = {
   onSubmit: (data: FormValues) => void;
-  classNameData: classType;
+  classNameData: classType[];
   setSelectedClass: React.Dispatch<React.SetStateAction<string>>;
   handleChangeGender: (newGender: string) => void;
 };
@@ -114,7 +114,7 @@ function Form({
                 <Autocomplete
                   {...field}
                   disablePortal
-                  options={classNameData}
+                  options={classNameData as unknown as readonly string[]}
                   value={field?.value ? String(field?.value) : ''}
                   onChange={(_, newValue) => {
                     field.onChange(newValue);

@@ -19,7 +19,7 @@ import type { classType, StudentsDataType } from './types';
 function Home() {
   const [load, setLoad] = useState(false);
   const localData = localStorage.getItem('teacherInfo');
-  const [classes, setClasses] = useState<classType[]>();
+  const [classes, setClasses] = useState<classType[]>([]);
   const [students, setStudents] = useState<StudentsDataType[]>([]);
   const [allStudents, setAllStudents] = useState<StudentsDataType[]>([]);
   const [selectedClass, setSelectedClass] = useState<string>('');
@@ -39,8 +39,7 @@ function Home() {
       const { data } = await subbase.from('available_classes').select('*');
 
       if (data) {
-        const classNames = data.map((item) => item.class_name);
-        setClasses(classNames);
+        setClasses(data);
       }
     };
     getClassData();
