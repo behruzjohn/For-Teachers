@@ -36,6 +36,7 @@ function BottomMath({ data, workSheet, headerColumnValues, students }: Props) {
   const row1 = workSheet.getRow(currentRow);
 
   row1.eachCell((cell) => {
+    cell.numFmt = '0';
     cell.font = { bold: true };
     cell.alignment = { horizontal: 'center', vertical: 'middle' };
     cell.border = borderStyle;
@@ -58,6 +59,7 @@ function BottomMath({ data, workSheet, headerColumnValues, students }: Props) {
   const row2 = workSheet.getRow(currentRow);
 
   row2.eachCell((cell) => {
+    cell.numFmt = '0';
     cell.font = { bold: true };
     cell.alignment = { horizontal: 'center', vertical: 'middle' };
     cell.border = borderStyle;
@@ -83,6 +85,7 @@ function BottomMath({ data, workSheet, headerColumnValues, students }: Props) {
   const row3 = workSheet.getRow(currentRow);
 
   row3.eachCell((cell) => {
+    cell.numFmt = '0';
     cell.font = { bold: true };
     cell.alignment = { horizontal: 'center', vertical: 'middle' };
     cell.border = borderStyle;
