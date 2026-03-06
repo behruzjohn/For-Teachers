@@ -115,10 +115,12 @@ function Form({
                   {...field}
                   disablePortal
                   options={classNameData}
-                  value={field?.value ? String(field?.value) : ''}
-                  onChange={(_, newValue) => {
+                  value={field?.value}
+                  onChange={(_, newValue: classType | null) => {
                     field.onChange(newValue);
-                    setSelectedClass(newValue || '');
+                    setSelectedClass(
+                      typeof newValue === 'string' ? newValue : '',
+                    );
                   }}
                   renderInput={(params) => (
                     <TextField {...params} label='Sinfni tanlang' />
