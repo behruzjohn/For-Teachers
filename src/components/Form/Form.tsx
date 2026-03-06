@@ -115,7 +115,7 @@ function Form({
                   {...field}
                   disablePortal
                   options={classNameData}
-                  value={field?.value}
+                  value={(field?.value as unknown as classType) || null}
                   onChange={(_, newValue: classType | null) => {
                     field.onChange(newValue);
                     setSelectedClass(
