@@ -1,5 +1,5 @@
 export interface classType {
-  class_name: string;
+  class_name: string[];
 }
 export interface StudentsDataType {
   length(length: number): unknown;

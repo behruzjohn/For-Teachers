@@ -50,6 +50,7 @@ function Home() {
     const fetchStudents = async () => {
       setLoad(true);
       const { data } = await subbase.from('students').select('*');
+
       if (data) {
         const filtered = data.filter(
           (item) => item.className === selectedClass,
