@@ -170,8 +170,14 @@ function Form({
           )}
         />
         <Accordion
-          style={{ borderRadius: 4 }}
-          slotProps={{ transition: { unmountOnExit: true } }}
+          sx={{
+            boxShadow: 'none',
+            '&.MuiAccordion-root:before': { display: 'none' },
+          }}
+          style={{
+            borderRadius: 6,
+            border: '1px solid #C4C4C4',
+          }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <img src={assignment} alt='icon' width={28} height={28} />
