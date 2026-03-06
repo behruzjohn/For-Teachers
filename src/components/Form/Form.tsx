@@ -114,7 +114,7 @@ function Form({
                 <Autocomplete
                   {...field}
                   disablePortal
-                  options={classNameData as unknown as readonly string[]}
+                  options={classNameData}
                   value={field?.value ? String(field?.value) : ''}
                   onChange={(_, newValue) => {
                     field.onChange(newValue);

@@ -39,28 +39,29 @@ function Home() {
       const { data } = await subbase.from('available_classes').select('*');
 
       if (data) {
-        setClasses(data);
+        setClasses(data.map((item) => item.class_name));
       }
     };
     getClassData();
   }, []);
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      setLoad(true);
-      const { data } = await subbase.from('students').select('*');
+    if (selectedClass?.length) {
+      const fetchStudents = async () => {
+        setLoad(true);
+        const { data } = await subbase
+          .from('students')
+          .select('*')
+          .eq('className', selectedClass);
 
-      if (data) {
-        const filtered = data.filter(
-          (item) => item.className === selectedClass,
-        );
-
-        setAllStudents(filtered.sort());
-        setStudents(filtered.sort());
-      }
-      setLoad(false);
-    };
-    fetchStudents();
+        if (data) {
+          setAllStudents(data.sort());
+          setStudents(data.sort());
+        }
+        setLoad(false);
+      };
+      fetchStudents();
+    }
   }, [selectedClass]);
 
   const handleChangeGender = (newGender: string) => {
