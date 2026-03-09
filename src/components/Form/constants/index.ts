@@ -7,7 +7,13 @@ export const FORM_OPTIONS = [
   'CHSB-3',
 ];
 export const Choraks = ['1-chorak', '2-chorak', '3-chorak', '4-chorak'];
-export const Genders = ['Butun sinf', "O'gil bolalar", 'Qiz bolalar'];
+export const Genders = [
+  'Butun sinf',
+  "O'gil bolalar",
+  'Qiz bolalar',
+  '1-guruh',
+  '2-guruh',
+];
 export const classList = [
   '5-A',
   '5-B',

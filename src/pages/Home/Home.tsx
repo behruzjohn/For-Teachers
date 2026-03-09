@@ -65,10 +65,16 @@ function Home() {
   }, [selectedClass]);
 
   const handleChangeGender = (newGender: string) => {
+    const middle = Math.ceil(allStudents.length / 2);
+
     if (newGender === "O'gil bolalar") {
       setStudents(allStudents.filter((student) => student.gender === 'male'));
     } else if (newGender === 'Qiz bolalar') {
       setStudents(allStudents.filter((student) => student.gender === 'female'));
+    } else if (newGender === '1-guruh') {
+      setStudents(allStudents.slice(0, middle));
+    } else if (newGender === '2-guruh') {
+      setStudents(allStudents.slice(middle));
     } else {
       setStudents(allStudents);
     }
