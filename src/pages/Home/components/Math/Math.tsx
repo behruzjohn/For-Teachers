@@ -82,7 +82,7 @@ function BottomMath({
     const columnLetter = workSheet.getColumn(col).letter;
 
     if (col < headerColumnValues) {
-      const maxScore = Number(data?.exercises[col - 3]?.score) || 100;
+      const maxScore = Number(data?.exercises[col - 3]?.score) || 0;
       totalMaxScore += maxScore;
 
       console.log(columnLetter, averageScoreRow);
@@ -97,7 +97,11 @@ function BottomMath({
     }
   }
 
-  const averageFormula = `SUM(${firstExColumn}${currentRow - 1}:${lastExColumn}${currentRow - 1})/${totalMaxScore}*100`;
+  const percentColumnLetter = workSheet.getColumn(
+    headerColumnValues + 1,
+  ).letter;
+
+  const averageFormula = `IFERROR(AVERAGEIF(${percentColumnLetter}4:${percentColumnLetter}${endRow},">0"),0)`;
 
   const lastColumnLetter = workSheet.getColumn(headerColumnValues + 1).letter;
   const lastCell = workSheet.getCell(`${lastColumnLetter}${currentRow}`);
@@ -126,7 +130,7 @@ function BottomMath({
     const columnLetter = workSheet.getColumn(col).letter;
 
     workSheet.getCell(`${columnLetter}${currentRow}`).value = {
-      formula: `100-${columnLetter}${currentRow - 1}`,
+      formula: `IFERROR(100-${columnLetter}${currentRow - 1},0)`,
     };
   }
 }
