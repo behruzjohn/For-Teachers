@@ -1,42 +1,48 @@
-import { saveAs } from 'file-saver';
-import ExcelJS from 'exceljs';
+import { saveAs } from "file-saver";
+import ExcelJS from "exceljs";
 import {
   borderStyle,
   borderStyleForHeaderTitle1,
   borderStyleForHeaderTitle2,
   Title,
-} from '../../constants/data';
-import { Container, Divider, Stack, Typography } from '@mui/material';
-import Form from '../../components/Form/Form';
-import { StyleHome } from './Home.style';
-import type { FormValues } from '../../components/Form/types';
-import BottomMath from './components/Math/Math';
-import { useEffect, useState } from 'react';
-import Loader from '../../components/Loader/Loader';
-import { createClient } from '@supabase/supabase-js';
-import type { classType, StudentsDataType } from './types';
+} from "../../constants/data";
+import { Container, Divider, Stack, Typography } from "@mui/material";
+import Form from "../../components/Form/Form";
+import { StyleHome } from "./Home.style";
+import type { FormValues } from "../../components/Form/types";
+import BottomMath from "./components/Math/Math";
+import { useEffect, useState } from "react";
+import Loader from "../../components/Loader/Loader";
+import { createClient } from "@supabase/supabase-js";
+import type { classType, StudentsDataType } from "./types";
 
 function Home() {
   const [load, setLoad] = useState(false);
-  const localData = localStorage.getItem('teacherInfo');
+  const localData = localStorage.getItem("teacherInfo");
   const [classes, setClasses] = useState<classType[]>([]);
+  const [engMode, setEngMode] = useState(false);
   const [students, setStudents] = useState<StudentsDataType[]>([]);
   const [allStudents, setAllStudents] = useState<StudentsDataType[]>([]);
-  const [selectedClass, setSelectedClass] = useState<string>('');
-  let teacherName: string = '';
-  let lesson = '';
+  const [selectedClass, setSelectedClass] = useState<string>("");
+  let teacherName: string = "";
+  let lesson = "";
   if (localData) {
     teacherName = JSON.parse(localData).name;
     lesson = JSON.parse(localData).lesson;
   }
+  useEffect(() => {
+    if (teacherName === "Ingliz tili") {
+      setEngMode(true);
+    }
+  }, []);
 
-  const subbaseUrl = 'https://oaglxlhfzfhblwrzsplh.supabase.co';
-  const subbaseKey = 'sb_publishable_cD0WY9xAVN9xB71aHYwMKw__OoVtT_b';
+  const subbaseUrl = "https://oaglxlhfzfhblwrzsplh.supabase.co";
+  const subbaseKey = "sb_publishable_cD0WY9xAVN9xB71aHYwMKw__OoVtT_b";
   const subbase = createClient(subbaseUrl, subbaseKey);
 
   useEffect(() => {
     const getClassData = async () => {
-      const { data } = await subbase.from('available_classes').select('*');
+      const { data } = await subbase.from("available_classes").select("*");
 
       if (data) {
         setClasses(data.map((item) => item.class_name));
@@ -50,9 +56,9 @@ function Home() {
       const fetchStudents = async () => {
         setLoad(true);
         const { data } = await subbase
-          .from('students')
-          .select('*')
-          .eq('className', selectedClass);
+          .from("students")
+          .select("*")
+          .eq("className", selectedClass);
 
         if (data) {
           setAllStudents(data.sort());
@@ -68,12 +74,12 @@ function Home() {
     const middle = Math.ceil(allStudents.length / 2);
 
     if (newGender === "O'gil bolalar") {
-      setStudents(allStudents.filter((student) => student.gender === 'male'));
-    } else if (newGender === 'Qiz bolalar') {
-      setStudents(allStudents.filter((student) => student.gender === 'female'));
-    } else if (newGender === '1-guruh') {
+      setStudents(allStudents.filter((student) => student.gender === "male"));
+    } else if (newGender === "Qiz bolalar") {
+      setStudents(allStudents.filter((student) => student.gender === "female"));
+    } else if (newGender === "1-guruh") {
       setStudents(allStudents.slice(0, middle));
-    } else if (newGender === '2-guruh') {
+    } else if (newGender === "2-guruh") {
       setStudents(allStudents.slice(middle));
     } else {
       setStudents(allStudents);
@@ -82,11 +88,11 @@ function Home() {
 
   const handleClickDownload = async (data: FormValues) => {
     const headerColumnValues = [
-      '№',
-      'FIO',
+      "№",
+      "FIO",
       ...data.exercises.map((e) => `${e.title}\n(${e.score}-bal)`),
-      'Jami',
-      '%',
+      "Jami",
+      "%",
     ];
 
     const workBook = new ExcelJS.Workbook();
@@ -100,28 +106,28 @@ function Home() {
     workSheet.mergeCells(`A1:${lastColumnLetter}1`);
     workSheet.mergeCells(`A2:${lastColumnLetter}2`);
 
-    const titleCell = workSheet.getCell('A1');
-    const titleCellDown = workSheet.getCell('A2');
+    const titleCell = workSheet.getCell("A1");
+    const titleCellDown = workSheet.getCell("A2");
 
     titleCell.value = Title;
-    titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
-    titleCell.font = { bold: false, size: 12, color: { argb: '#000000' } };
+    titleCell.alignment = { horizontal: "center", vertical: "middle" };
+    titleCell.font = { bold: false, size: 12, color: { argb: "#000000" } };
     titleCell.border = borderStyleForHeaderTitle1;
     titleCell.fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFFFFFFF' },
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFFFFFFF" },
     };
 
     //title cell down
     titleCellDown.value = `${data?.class} sinf ${lesson} -  fanidan  ${data?.chorak}   ${data?.examName} natijalari tahlili O'qituvchi: ${teacherName}`;
-    titleCellDown.alignment = { horizontal: 'center', vertical: 'middle' };
-    titleCellDown.font = { bold: false, size: 12, color: { argb: '#000000' } };
+    titleCellDown.alignment = { horizontal: "center", vertical: "middle" };
+    titleCellDown.font = { bold: false, size: 12, color: { argb: "#000000" } };
     titleCellDown.border = borderStyleForHeaderTitle2;
     titleCellDown.fill = {
-      type: 'pattern',
-      pattern: 'solid',
-      fgColor: { argb: 'FFFFFFFF' },
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FFFFFFFF" },
     };
     //
 
@@ -152,33 +158,48 @@ function Home() {
     const firstExerciseColumn = workSheet.getColumn(3);
     const lastExerciseColumn = workSheet.getColumn(data?.exercises?.length + 2);
 
+    const isEnglish = lesson === "Ingliz tili";
+
     for (let i = 0; i < students?.length; i++) {
+      const exerciseValues = data?.exercises.map(() => "");
+
+      let jamiFormula = `SUM(${firstExerciseColumnLetter}${i + 4}:${lastExerciseColumnLetter}${i + 4})`;
+
+      if (isEnglish) {
+        const jamiParts = data?.exercises.map((ex, idx) => {
+          const colLetter = workSheet.getColumn(idx + 3).letter;
+          const maxScore = ex.score || 100;
+          return `IF(ISNUMBER(${colLetter}${i + 4}), ${colLetter}${i + 4}*${maxScore}, 0)`;
+        });
+        jamiFormula = jamiParts.length > 0 ? jamiParts.join("+") : "0";
+      }
+
       const row = workSheet.addRow([
         i + 1,
         students[i].fullName,
-        ...new Array(data?.exercises.length).fill(''),
+        ...exerciseValues,
         {
-          formula: `SUM(${firstExerciseColumnLetter}${i + 4}:${lastExerciseColumnLetter}${i + 4})`,
+          formula: jamiFormula,
         },
       ]);
 
       row.eachCell((cell) => {
         cell.border = borderStyle;
-        cell.font = { bold: false, color: { argb: '000000' } };
-
+        cell.font = { bold: false, color: { argb: "000000" } };
         cell.fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: 'FFFFFFFF' },
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "FFFFFFFF" },
         };
       });
     }
-    studentsColumn.font = { bold: false, color: { argb: '000000' } };
-    firstExerciseColumn.font = { bold: false, color: { argb: '000000' } };
-    lastExerciseColumn.font = { bold: false, color: { argb: '000000' } };
+    studentsColumn.font = { bold: false, color: { argb: "000000" } };
+    firstExerciseColumn.font = { bold: false, color: { argb: "000000" } };
+    lastExerciseColumn.font = { bold: false, color: { argb: "000000" } };
 
     BottomMath({
       data: data,
+      lesson: lesson,
       students: students,
       workSheet: workSheet,
       headerColumnValues: headerColumnValues?.length - 1,
@@ -192,12 +213,12 @@ function Home() {
       const totalCell = workSheet.getCell(index, totalColumnIndex);
       if (index > 3 && index <= lastRowNumber - 2) {
         cell.border = borderStyle;
-        cell.font = { bold: true, color: { argb: '000000' } };
-        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+        cell.font = { bold: true, color: { argb: "000000" } };
+        cell.alignment = { horizontal: "center", vertical: "middle" };
         cell.fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: 'FFFFFFFF' },
+          type: "pattern",
+          pattern: "solid",
+          fgColor: { argb: "FFFFFFFF" },
         };
 
         cell.value = {
@@ -210,29 +231,29 @@ function Home() {
 
     workSheet.getColumn(totalColumnIndex).eachCell((cell, rowNumber) => {
       if (rowNumber > 3) {
-        cell.font = { bold: true, color: { argb: '000000' } };
-        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+        cell.font = { bold: true, color: { argb: "000000" } };
+        cell.alignment = { horizontal: "center", vertical: "middle" };
       }
     });
 
     workSheet.getColumn(1).eachCell((cell, rowNumber) => {
       if (rowNumber > 3) {
-        cell.font = { bold: true, color: { argb: '000000' } };
-        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+        cell.font = { bold: true, color: { argb: "000000" } };
+        cell.alignment = { horizontal: "center", vertical: "middle" };
       }
     });
 
     workSheet.getRow(3).eachCell((cell) => {
-      cell.font = { bold: true, color: { argb: '000000' } };
-      cell.alignment = { horizontal: 'center', vertical: 'middle' };
+      cell.font = { bold: true, color: { argb: "000000" } };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
       cell.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'FFFFFFFF' },
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFFFFFFF" },
       };
       cell.alignment = {
-        horizontal: 'center',
-        vertical: 'middle',
+        horizontal: "center",
+        vertical: "middle",
         wrapText: true,
       };
       cell.border = borderStyle;
@@ -241,7 +262,7 @@ function Home() {
 
     //save
     const buffer = await workBook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const blob = new Blob([buffer], { type: "application/octet-stream" });
     saveAs(
       blob,
       `${data?.class} sinf ${data?.chorak} chorak ${data?.examName} baholar tahlili (${teacherName}).xlsx`,
@@ -259,15 +280,15 @@ function Home() {
   return (
     <>
       {load && <Loader />}
-      <Container maxWidth='md'>
+      <Container maxWidth="md">
         <StyleHome>
-          <Stack className='form-header'>
-            <Typography ml={3} variant='h5' fontSize={16} fontWeight={500}>
+          <Stack className="form-header">
+            <Typography ml={3} variant="h5" fontSize={16} fontWeight={500}>
               Hisobot yaratish
             </Typography>
-            <Divider className='divider' />
+            <Divider className="divider" />
           </Stack>
-          <Stack alignItems='center'>
+          <Stack alignItems="center">
             <Form
               setSelectedClass={setSelectedClass}
               classNameData={classes}

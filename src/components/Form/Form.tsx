@@ -9,18 +9,18 @@ import {
   Stack,
   TextField,
   Typography,
-} from '@mui/material';
+} from "@mui/material";
 
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { StyleForm } from './Form.style';
-import assignment from '../../assets/add-file.png';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import add from '../../assets/add.svg';
-import { Choraks, FORM_OPTIONS, Genders } from './constants';
-import type { FormValues } from './types';
-import deleteIcon from '../../assets/delete.svg';
-import download from '../../assets/download.svg';
-import type { classType } from '../../pages/Home/types';
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { StyleForm } from "./Form.style";
+import assignment from "../../assets/add-file.png";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import add from "../../assets/add.svg";
+import { Choraks, FORM_OPTIONS, Genders } from "./constants";
+import type { FormValues } from "./types";
+import deleteIcon from "../../assets/delete.svg";
+import download from "../../assets/download.svg";
+import type { classType } from "../../pages/Home/types";
 
 type FormProps = {
   onSubmit: (data: FormValues) => void;
@@ -42,13 +42,13 @@ function Form({
     handleSubmit,
   } = useForm<FormValues>({
     defaultValues: {
-      exercises: [{ title: 'Topshiriq 1', score: '', width: 14 }],
+      exercises: [{ title: "Topshiriq 1", score: "", width: 14 }],
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'exercises',
+    name: "exercises",
   });
 
   return (
@@ -56,17 +56,17 @@ function Form({
       <Stack
         mb={4}
         gap={2.4}
-        component='form'
-        className='form'
+        component="form"
+        className="form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Stack flexDirection='row' gap={2}>
+        <Stack flexDirection="row" gap={2}>
           <Controller
-            name='examName'
+            name="examName"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl fullWidth className='examName'>
+              <FormControl fullWidth className="examName">
                 <Autocomplete
                   {...field}
                   disablePortal
@@ -76,41 +76,41 @@ function Form({
                     field.onChange(newValue);
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label='CHSB yoki BSB ni kiriting' />
+                    <TextField {...params} label="CHSB yoki BSB ni kiriting" />
                   )}
                 />
               </FormControl>
             )}
           />
           <Controller
-            name='chorak'
+            name="chorak"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl fullWidth className='examName'>
+              <FormControl fullWidth className="examName">
                 <Autocomplete
                   {...field}
                   disablePortal
                   options={Choraks}
-                  value={field.value ? String(field.value) : ''}
+                  value={field.value ? String(field.value) : ""}
                   onChange={(_, newValue) => {
                     field.onChange(newValue);
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label='Chorakni tanlang' />
+                    <TextField {...params} label="Chorakni tanlang" />
                   )}
                 />
               </FormControl>
             )}
           />
         </Stack>
-        <Stack flexDirection='row' gap={2}>
+        <Stack flexDirection="row" gap={2}>
           <Controller
-            name='class'
+            name="class"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl fullWidth className='class'>
+              <FormControl fullWidth className="class">
                 <Autocomplete
                   {...field}
                   disablePortal
@@ -119,11 +119,11 @@ function Form({
                   onChange={(_, newValue: classType | null) => {
                     field.onChange(newValue);
                     setSelectedClass(
-                      typeof newValue === 'string' ? newValue : '',
+                      typeof newValue === "string" ? newValue : "",
                     );
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label='Sinfni tanlang' />
+                    <TextField {...params} label="Sinfni tanlang" />
                   )}
                 />
               </FormControl>
@@ -131,22 +131,22 @@ function Form({
           />
 
           <Controller
-            name='gender'
+            name="gender"
             control={control}
             rules={{ required: true }}
             render={({ field }) => (
-              <FormControl fullWidth className='class'>
+              <FormControl fullWidth className="class">
                 <Autocomplete
                   {...field}
                   disablePortal
                   options={Genders}
-                  value={field.value ? String(field.value) : ''}
+                  value={field.value ? String(field.value) : ""}
                   onChange={(_, newValue) => {
                     field.onChange(newValue);
-                    handleChangeGender(newValue || '');
+                    handleChangeGender(newValue || "");
                   }}
                   renderInput={(params) => (
-                    <TextField {...params} label='Jinsini tanlang' />
+                    <TextField {...params} label="Jinsini tanlang" />
                   )}
                 />
               </FormControl>
@@ -154,14 +154,14 @@ function Form({
           />
         </Stack>
         <Controller
-          name='totalScore'
+          name="totalScore"
           control={control}
           rules={{ required: true }}
           render={({ field }) => (
-            <FormControl fullWidth className='count-of-students'>
+            <FormControl fullWidth className="count-of-students">
               <TextField
-                label='Jami ballni kiriting...'
-                type='number'
+                label="Jami ballni kiriting..."
+                type="number"
                 {...field}
                 required
                 error={!!errors[field.name]}
@@ -171,23 +171,23 @@ function Form({
         />
         <Accordion
           sx={{
-            boxShadow: 'none',
-            '&.MuiAccordion-root:before': { display: 'none' },
+            boxShadow: "none",
+            "&.MuiAccordion-root:before": { display: "none" },
           }}
           style={{
             borderRadius: 6,
-            border: '1px solid #C4C4C4',
+            border: "1px solid #C4C4C4",
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <img src={assignment} alt='icon' width={28} height={28} />
+            <img src={assignment} alt="icon" width={28} height={28} />
             <Typography ml={1}>Topshiriqlarni qo'shish</Typography>
           </AccordionSummary>
 
           <AccordionDetails>
             {fields.map((item, index) => (
-              <Stack key={item.id} flexDirection='row' gap={1} mb={2}>
-                <Stack style={{ width: '100%' }}>
+              <Stack key={item.id} flexDirection="row" gap={1} mb={2}>
+                <Stack style={{ width: "100%" }}>
                   <Controller
                     name={`exercises.${index}.score`}
                     control={control}
@@ -197,10 +197,10 @@ function Form({
                         label={`Topshiriq ${index + 1}`}
                         style={{ marginTop: 4 }}
                         {...field}
-                        type='number'
+                        type="number"
                         required
                         error={!!errors?.exercises?.[index]?.score}
-                        placeholder='Balini kiriting'
+                        placeholder="Balini kiriting"
                       />
                     )}
                   />
@@ -216,16 +216,16 @@ function Form({
               </Stack>
             ))}
 
-            <Stack alignItems='flex-end' justifyContent='center'>
+            <Stack alignItems="flex-end" justifyContent="center">
               <Button
                 startIcon={<img width={24} height={24} src={add} />}
-                color='info'
-                size='small'
-                variant='contained'
+                color="info"
+                size="small"
+                variant="contained"
                 onClick={() =>
                   append({
                     title: `Topshiriq ${fields.length + 1}`,
-                    score: '',
+                    score: "",
                     width: 14,
                   })
                 }
@@ -238,10 +238,10 @@ function Form({
         <Stack>
           <Button
             style={{ height: 40 }}
-            color='success'
+            color="success"
             startIcon={<img width={20} height={20} src={download} />}
-            variant='contained'
-            type='submit'
+            variant="contained"
+            type="submit"
           >
             Yuklab olish
           </Button>
