@@ -20,7 +20,6 @@ function Home() {
   const [load, setLoad] = useState(false);
   const localData = localStorage.getItem("teacherInfo");
   const [classes, setClasses] = useState<classType[]>([]);
-  const [engMode, setEngMode] = useState(false);
   const [students, setStudents] = useState<StudentsDataType[]>([]);
   const [allStudents, setAllStudents] = useState<StudentsDataType[]>([]);
   const [selectedClass, setSelectedClass] = useState<string>("");
@@ -30,11 +29,6 @@ function Home() {
     teacherName = JSON.parse(localData).name;
     lesson = JSON.parse(localData).lesson;
   }
-  useEffect(() => {
-    if (teacherName === "Ingliz tili") {
-      setEngMode(true);
-    }
-  }, []);
 
   const subbaseUrl = "https://oaglxlhfzfhblwrzsplh.supabase.co";
   const subbaseKey = "sb_publishable_cD0WY9xAVN9xB71aHYwMKw__OoVtT_b";
@@ -159,13 +153,14 @@ function Home() {
     const lastExerciseColumn = workSheet.getColumn(data?.exercises?.length + 2);
 
     const isEnglish = lesson === "Ingliz tili";
+    const examName = data?.examName.slice(0, 4);
 
     for (let i = 0; i < students?.length; i++) {
       const exerciseValues = data?.exercises.map(() => "");
 
       let jamiFormula = `SUM(${firstExerciseColumnLetter}${i + 4}:${lastExerciseColumnLetter}${i + 4})`;
 
-      if (isEnglish) {
+      if (isEnglish && examName === "CHSB") {
         const jamiParts = data?.exercises.map((ex, idx) => {
           const colLetter = workSheet.getColumn(idx + 3).letter;
           const maxScore = ex.score || 100;

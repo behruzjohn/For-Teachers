@@ -15,9 +15,7 @@ function BottomMath({
   workSheet,
   headerColumnValues,
   students,
-  lesson,
 }: Props) {
-  const isEnglish = lesson === "Ingliz tili";
   const count = (title: boolean) => {
     const countArr = [];
     if (title) {
@@ -73,8 +71,6 @@ function BottomMath({
     cell.border = borderStyle;
   });
 
-  const firstExColumn = workSheet.getColumn(3).letter;
-  const lastExColumn = workSheet.getColumn(headerColumnValues - 1).letter;
   let totalMaxScore = 0;
   const averageScoreRow = currentRow - 1;
 
