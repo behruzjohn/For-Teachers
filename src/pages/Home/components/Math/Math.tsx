@@ -88,7 +88,7 @@ function BottomMath({
       console.log(columnLetter, averageScoreRow);
 
       workSheet.getCell(`${columnLetter}${currentRow}`).value = {
-        formula: `${columnLetter}${averageScoreRow}/${maxScore}*100`,
+        formula: `IFERROR(${columnLetter}${averageScoreRow}/${maxScore}*100,0)`,
       };
     } else {
       workSheet.getCell(`${columnLetter}${currentRow}`).value = {
