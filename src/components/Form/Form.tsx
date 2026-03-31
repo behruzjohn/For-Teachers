@@ -20,31 +20,45 @@ import { Choraks, FORM_OPTIONS, Genders } from "./constants";
 import type { FormValues } from "./types";
 import deleteIcon from "../../assets/delete.svg";
 import download from "../../assets/download.svg";
-import type { classType } from "../../pages/Home/types";
+import type { classType, StudentsDataType } from "../../pages/Home/types";
+import { handleChangeGender } from "../../pages/Home/helpers";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
+import ExercisesField from "./components/ExersizesField/ExersizesField";
+import FormAlert from "./components/ExersizesField/NotificationForm/NotificationForm";
 
 type FormProps = {
   onSubmit: (data: FormValues) => void;
   classNameData: classType[];
+  allStudents: StudentsDataType[];
+  setStudents: Dispatch<SetStateAction<StudentsDataType[]>>;
   setSelectedClass: React.Dispatch<React.SetStateAction<string>>;
-  handleChangeGender: (newGender: string) => void;
 };
 
 function Form({
   setSelectedClass,
   classNameData,
   onSubmit,
+  allStudents,
 
-  handleChangeGender,
+  setStudents,
 }: FormProps) {
   const {
     control,
     formState: { errors },
     handleSubmit,
+    resetField,
+    watch,
   } = useForm<FormValues>({
     defaultValues: {
       exercises: [{ title: "Topshiriq 1", score: "", width: 14 }],
     },
   });
+
+  const classForm = watch("class");
+
+  useEffect(() => {
+    resetField("gender");
+  }, [classForm]);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -60,6 +74,7 @@ function Form({
         className="form"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <FormAlert />
         <Stack flexDirection="row" gap={2}>
           <Controller
             name="examName"
@@ -118,6 +133,7 @@ function Form({
                   value={(field?.value as unknown as classType) || null}
                   onChange={(_, newValue: classType | null) => {
                     field.onChange(newValue);
+
                     setSelectedClass(
                       typeof newValue === "string" ? newValue : "",
                     );
@@ -143,7 +159,11 @@ function Form({
                   value={field.value ? String(field.value) : ""}
                   onChange={(_, newValue) => {
                     field.onChange(newValue);
-                    handleChangeGender(newValue || "");
+                    handleChangeGender(
+                      newValue || "",
+                      allStudents,
+                      setStudents,
+                    );
                   }}
                   renderInput={(params) => (
                     <TextField {...params} label="Jinsini tanlang" />
@@ -169,72 +189,15 @@ function Form({
             </FormControl>
           )}
         />
-        <Accordion
-          sx={{
-            boxShadow: "none",
-            "&.MuiAccordion-root:before": { display: "none" },
-          }}
-          style={{
-            borderRadius: 6,
-            border: "1px solid #C4C4C4",
-          }}
-        >
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <img src={assignment} alt="icon" width={28} height={28} />
-            <Typography ml={1}>Topshiriqlarni qo'shish</Typography>
-          </AccordionSummary>
 
-          <AccordionDetails>
-            {fields.map((item, index) => (
-              <Stack key={item.id} flexDirection="row" gap={1} mb={2}>
-                <Stack style={{ width: "100%" }}>
-                  <Controller
-                    name={`exercises.${index}.score`}
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <TextField
-                        label={`Topshiriq ${index + 1}`}
-                        style={{ marginTop: 4 }}
-                        {...field}
-                        type="number"
-                        required
-                        error={!!errors?.exercises?.[index]?.score}
-                        placeholder="Balini kiriting"
-                      />
-                    )}
-                  />
-                </Stack>
-                <Stack mt={1.1}>
-                  <IconButton
-                    onClick={() => remove(index)}
-                    disabled={fields.length === 1}
-                  >
-                    <img width={24} height={24} src={deleteIcon} />
-                  </IconButton>
-                </Stack>
-              </Stack>
-            ))}
+        <ExercisesField
+          fields={fields}
+          remove={remove}
+          append={append}
+          errors={errors}
+          control={control}
+        />
 
-            <Stack alignItems="flex-end" justifyContent="center">
-              <Button
-                startIcon={<img width={24} height={24} src={add} />}
-                color="info"
-                size="small"
-                variant="contained"
-                onClick={() =>
-                  append({
-                    title: `Topshiriq ${fields.length + 1}`,
-                    score: "",
-                    width: 14,
-                  })
-                }
-              >
-                Yana topshiriq qo'shish
-              </Button>
-            </Stack>
-          </AccordionDetails>
-        </Accordion>
         <Stack>
           <Button
             style={{ height: 40 }}
