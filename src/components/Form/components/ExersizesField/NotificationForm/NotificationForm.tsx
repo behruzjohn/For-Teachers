@@ -13,7 +13,7 @@ function FormAlert() {
 
       <Typography variant="body2" sx={{ mb: 1 }}>
         Agar siz ham ushbu funksiyadan foydalanmoqchi bo‘lsangiz yoki taklif
-        bildirmoqchi bo‘lsangiz, quyidagi manzilga murojaat qiling:
+        bildirmoqchi bo‘lsangiz, pastdagi telegram manzilga murojaat qiling:
       </Typography>
 
       <Box
