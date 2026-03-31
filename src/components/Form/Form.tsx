@@ -1,24 +1,15 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Autocomplete,
   Button,
   FormControl,
-  IconButton,
   Stack,
   TextField,
-  Typography,
 } from "@mui/material";
 
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { StyleForm } from "./Form.style";
-import assignment from "../../assets/add-file.png";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import add from "../../assets/add.svg";
 import { Choraks, FORM_OPTIONS, Genders } from "./constants";
 import type { FormValues } from "./types";
-import deleteIcon from "../../assets/delete.svg";
 import download from "../../assets/download.svg";
 import type { classType, StudentsDataType } from "../../pages/Home/types";
 import { handleChangeGender } from "../../pages/Home/helpers";

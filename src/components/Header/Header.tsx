@@ -1,11 +1,9 @@
 import {
   Avatar,
   Box,
-  CardHeader,
   Chip,
   Divider,
   IconButton,
-  ListItemIcon,
   Menu,
   MenuItem,
   Stack,
@@ -96,7 +94,6 @@ function Header() {
           <Stack className="profile">
             <Box
               onClick={(e) => setAnchorEl(e.currentTarget)}
-              onClose={() => setAnchorEl(null)}
               sx={{
                 display: "flex",
                 alignItems: "center",

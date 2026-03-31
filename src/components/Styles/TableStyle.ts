@@ -1,4 +1,3 @@
-import type { Table } from "exceljs";
 import ExcelJS from "exceljs";
 import { borderStyle } from "../../constants/data";
 
